@@ -489,6 +489,7 @@ class Enemy:
 player = Player()
 wave = 1
 score = 0
+score_saved=False
 if os.path.exists(HIGHSCORE_FILE):
     with open(HIGHSCORE_FILE, "r") as f:
         high_score = int(f.read())
@@ -568,6 +569,12 @@ def get_player_name():
                         name += event.unicode
 
     return name if name else "Player"
+#----------------------------
+def save_to_leaderboard(name, score):
+
+    with open(LEADERBOARD_FILE, "a") as f:
+        f.write(f"{name} - {score}\n")
+
 #----------------------RESET BUTTON--------------
 def reset_game():
     global player, enemies, explosions, health_packs
@@ -580,6 +587,7 @@ def reset_game():
     score = 0
     wave = 1
     frame_count = 0
+    score_saved=False
 #-------------------MENU------------------------
 def draw_menu():
 
@@ -1026,7 +1034,7 @@ while running:
     )
     screen.blit(weapon_text, (10, 70))
 
-    if player.health <= 0:
+    if player.health <= 0 and not score_saved:
         #player_name = get_player_name()
         if score > high_score:
             high_score = score
@@ -1035,7 +1043,7 @@ while running:
         
         with open(LEADERBOARD_FILE, "a") as f:
             f.write(f"{player_name} - {score}\n")
-
+        game_state="leaderbaord"
     
         shoot_sound.play()
         screen.fill((0, 0, 0))
@@ -1114,5 +1122,4 @@ while running:
 
     pygame.display.update()
     clock.tick(60)
-
 pygame.quit()
