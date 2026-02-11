@@ -42,5 +42,4 @@ for ep in range(EPISODES):
         enemy.update_target()
         print(f"Episode {ep} completed")
 
-print("Training finished ✅")
-
+print("Training finished ")
